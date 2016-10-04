@@ -26,7 +26,7 @@ const appGenerator = (meta, body, readme) => {
   app.use('/', routes({
       meta: meta
     }));
-  app.use('/module-preview.html', modulePreview({
+  app.get('/module-preview.html', modulePreview({
     meta: meta
   }));
 

@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router(),
   getRoute = ( (data) => 
-    router.get('/module-preview', (req, res, next) => {
+    router.get('/module-preview.html', (req, res, next) => {
       res.render('modulePreview', data);
     })
   );
