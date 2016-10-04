@@ -7,7 +7,9 @@ const express = require('express'),
 
   routes = require('./routes/index'),
   modulePreview = require('./routes/modulePreview'),
-  moduleMeta = require('./routes/moduleMeta');
+  moduleMeta = require('./routes/moduleMeta'),
+  moduleContent = require('./routes/moduleContent'),
+  moduleReadme = require('./routes/moduleReadme');
 
 const appGenerator = (data, body, readme) => {
   const app = express();
@@ -32,7 +34,7 @@ const appGenerator = (data, body, readme) => {
     meta: data
   }));
 
-  app.use('/module', routes({
+  app.use('/content', routes({
     meta: data
   }));
 
@@ -48,6 +50,9 @@ const appGenerator = (data, body, readme) => {
     meta: data.meta
   }));
 
+  app.get('/module-content.html', moduleContent(data));
+
+  app.get('/module-readme.html', moduleReadme(data));
 
   app.get('/module-view404.html', (req, res, next) => {
     const options = {

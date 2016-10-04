@@ -1,0 +1,25 @@
+link(rel="import", href="../components/polymer/polymer.html")
+link(rel="import", href="../components/paper-card/paper-card.html")
+if (meta.elements.length > 0)
+  - each el in meta.elements
+    link(rel="import", href=el)
+
+dom-module(id="module-content")
+  template
+    style.
+      :host {
+        display: block;
+
+        padding: 10px 20px;
+      }
+      #content {
+        width: 100%;
+      }
+    paper-card(elevation=2 heading=meta.title)#content
+      .card-content
+        | !{content}
+
+  script.
+    Polymer({
+      is: 'module-content'
+    });
