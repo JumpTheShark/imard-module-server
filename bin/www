@@ -6,15 +6,22 @@
 
 const appGen = require('../app'),
   debug = require('debug')('imard-module-server:server'),
-  http = require('http');
+  http = require('http'),
+  importer = require('../lib/importer')(process.cwd());
 
 /**
  * Get port from environment and store in Express.
  */
 
 const port = normalizePort(process.env.PORT || '3000'),
-  meta = {title: "Super meta", path: process.cwd()},
-  app = appGen(meta, null, null);
+  data = {
+    title: "Super meta",
+    path: process.cwd(),
+    meta: importer.getMeta(),
+    readme: importer.getReadme(),
+    content: importer.getContent()
+  },
+  app = appGen(data, null, null);
 
 app.set('port', port);
 

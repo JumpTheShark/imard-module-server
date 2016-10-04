@@ -6,9 +6,10 @@ const express = require('express'),
   bodyParser = require('body-parser'),
 
   routes = require('./routes/index'),
-  modulePreview = require('./routes/modulePreview');
+  modulePreview = require('./routes/modulePreview'),
+  moduleMeta = require('./routes/moduleMeta');
 
-const appGenerator = (meta, body, readme) => {
+const appGenerator = (data, body, readme) => {
   const app = express();
 
   // view engine setup
@@ -23,13 +24,30 @@ const appGenerator = (meta, body, readme) => {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
 
-  app.use(['/', /\/view\d+/], routes({
-    meta: meta
+  app.use('/', routes({
+    meta: data
+  }));
+
+  app.use('/info', routes({
+    meta: data
+  }));
+
+  app.use('/module', routes({
+    meta: data
+  }));
+
+  app.use('/readme', routes({
+    meta: data
   }));
 
   app.get('/module-preview.html', modulePreview({
-    meta: meta
+    meta: data.meta
   }));
+
+  app.get('/module-info.html', moduleMeta({
+    meta: data.meta
+  }));
+
 
   app.get('/module-view404.html', (req, res, next) => {
     const options = {
@@ -47,7 +65,7 @@ const appGenerator = (meta, body, readme) => {
         res.status(err.status).end();
       }
       else {
-        console.log('Sent:', fileName);
+        console.log('Sent');
       }
     });
 

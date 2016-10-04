@@ -1,0 +1,14 @@
+const express = require('express');
+
+const router = express.Router(),
+    getRoute = ( (data) =>
+            router.get('/module-info.html', (req, res, next) => {
+                res.render('moduleMeta', data);
+            })
+    );
+
+/* GET module-preview component. */
+
+
+
+module.exports = getRoute;
