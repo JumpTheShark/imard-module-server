@@ -23,12 +23,35 @@ const appGenerator = (meta, body, readme) => {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
 
-  app.use('/', routes({
-      meta: meta
-    }));
+  app.use(['/', /\/view\d+/], routes({
+    meta: meta
+  }));
+
   app.get('/module-preview.html', modulePreview({
     meta: meta
   }));
+
+  app.get('/module-view404.html', (req, res, next) => {
+    const options = {
+      root: __dirname + '/public/',
+      dotfiles: 'deny',
+      headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+      }
+    };
+
+    res.sendFile('/components/module-view404/module-view404.html', options, (err) => {
+      if (err) {
+        console.log(err);
+        res.status(err.status).end();
+      }
+      else {
+        console.log('Sent:', fileName);
+      }
+    });
+
+  });
 
   // catch 404 and forward to error handler
   app.use((req, res, next) => {
