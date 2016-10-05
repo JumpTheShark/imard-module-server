@@ -16,29 +16,31 @@ dom-module(id="module-info")
       li <strong>Description</strong>: #{meta.description}
       li <strong>Creation Date</strong>: #{meta.created}
       li <strong>Revision Date</strong>: #{meta.revised}
-      li <strong>Disciplines</strong>:
-        ul
-          - each disc in meta.disciplines
-            li= disc
-      li <strong>Study Objectives</strong>:
-        ul
-          - each so in meta.studyObjectives
-            li= so
-      li <strong>Keywords</strong>:
-        ul
-          - each key in meta.keywords
-            li= key
-      li <strong>Contributors</strong>:
-        ul
-          - each con in meta.contributors
-            li= con
-      if meta.elements.length > 0
+      if meta.disciplines && meta.disciplines.length > 0
+        li <strong>Disciplines</strong>:
+          ul
+            - each disc in meta.disciplines
+              li= disc
+      if meta.studyObjectives && meta.studyObjectives.length > 0
+        li <strong>Study Objectives</strong>:
+          ul
+            - each so in meta.studyObjectives
+              li= so
+      if meta.keywords && meta.keywords.length > 0
+        li <strong>Keywords</strong>:
+          ul
+            - each key in meta.keywords
+              li= key
+      if meta.contributors && meta.contributors.length > 0
+        li <strong>Contributors</strong>:
+          ul
+            - each con in meta.contributors
+              li= con
+      if meta.elements && meta.elements.length > 0
         li <strong>Imported elements</strong>:
           ul
           - each el in meta.elements
             li= el
-
-
 
   script.
     Polymer({

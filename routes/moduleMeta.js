@@ -7,8 +7,6 @@ const router = express.Router(),
             })
     );
 
-/* GET module-preview component. */
-
-
+/* GET module-meta component. */
 
 module.exports = getRoute;

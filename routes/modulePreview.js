@@ -9,6 +9,4 @@ const router = express.Router(),
 
 /* GET module-preview component. */
 
-
-
 module.exports = getRoute;
