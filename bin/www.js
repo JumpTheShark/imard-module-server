@@ -1,4 +1,3 @@
-#! /usr/bin/env node
 
 /**
  * Module dependencies.
@@ -7,21 +6,14 @@
 const appGen = require('../app'),
   debug = require('debug')('imard-module-server:server'),
   http = require('http'),
-  importer = require('../lib/importer')(process.cwd());
+  importer = require('../lib/importer');
 
 /**
  * Get port from environment and store in Express.
  */
 
 const port = normalizePort(process.env.PORT || '3000'),
-  data = {
-    title: "Super meta",
-    path: process.cwd(),
-    meta: importer.getMeta(),
-    readme: importer.getReadme(),
-    content: importer.getContent()
-  },
-  app = appGen(data, null, null);
+  app = appGen(importer);
 
 app.set('port', port);
 
@@ -29,15 +21,12 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
+server = http.createServer(app);
 
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -92,9 +81,9 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  // var addr = server.address();
+  // var bind = typeof addr === 'string'
+  //   ? 'pipe ' + addr
+  //   : 'port ' + addr.port;
+  // debug('Listening on ' + bind);
 }

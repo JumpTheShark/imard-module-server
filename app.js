@@ -3,23 +3,37 @@ const express = require('express'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser'),
+    bodyParser = require('body-parser');
 
-    routes = require('./routes/index'),
-    modulePreview = require('./routes/modulePreview'),
-    moduleMeta = require('./routes/moduleMeta'),
-    moduleContent = require('./routes/moduleContent'),
-    moduleReadme = require('./routes/moduleReadme');
+const appGenerator = function (importer) {
+    const routes = require('./routes/index'),
+        modulePreview = require('./routes/modulePreview'),
+        moduleMeta = require('./routes/moduleMeta'),
+        moduleContent = require('./routes/moduleContent'),
+        moduleReadme = require('./routes/moduleReadme');
 
-const appGenerator = (data, body, readme) => {
     const app = express();
+
+    let imported = importer(process.cwd());
+        data = {
+            title: "Super meta",
+            path: process.cwd(),
+            meta: imported.getMeta(),
+            readme: imported.getReadme(),
+            content: imported.getContent()
+        };
 
     // view engine setup
     app.set('views', path.join(__dirname, 'views'));
-    app.set('view engine', 'jade');
+    app.set('view engine', 'jade', {cache: false});
+    app.set('view cache', false);
 
     // uncomment after placing your favicon in /public
     //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+    app.use(function(req, res, next) {
+        res.locals.cache = false; // true in stage, production
+        next();
+    });
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
@@ -62,17 +76,15 @@ const appGenerator = (data, body, readme) => {
                 'x-timestamp': Date.now(),
                 'x-sent': true
             }
-    };
-
-    res.sendFile('/components/module-view404/module-view404.html', options, (err) => {
-        if (err) {
-            console.log(err);
-            res.status(err.status).end();
-        } else {
-            console.log('Sent');
-        }
-    });
-
+        };
+        res.sendFile('/components/module-view404/module-view404.html', options, (err) => {
+            if (err) {
+                console.log(err);
+                res.status(err.status).end();
+            } else {
+                console.log('Sent');
+            }
+        });
     });
 
     // catch 404 and forward to error handler
